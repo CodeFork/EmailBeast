@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailBeast", "EmailBeast\EmailBeast.csproj", "{696B12D9-3159-4F04-A428-C05268A22629}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailBeast.Test", "EmailBeast.Test\EmailBeast.Test.csproj", "{DE3A5E26-6324-440F-905C-B3A0AF175228}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailBeastConsoleApp", "EmailBeastConsoleApp\EmailBeastConsoleApp.csproj", "{3A723DC4-45DE-48C2-B1D3-13C5E4F40CE2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{696B12D9-3159-4F04-A428-C05268A22629}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{696B12D9-3159-4F04-A428-C05268A22629}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{696B12D9-3159-4F04-A428-C05268A22629}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{696B12D9-3159-4F04-A428-C05268A22629}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE3A5E26-6324-440F-905C-B3A0AF175228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE3A5E26-6324-440F-905C-B3A0AF175228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE3A5E26-6324-440F-905C-B3A0AF175228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE3A5E26-6324-440F-905C-B3A0AF175228}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A723DC4-45DE-48C2-B1D3-13C5E4F40CE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A723DC4-45DE-48C2-B1D3-13C5E4F40CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A723DC4-45DE-48C2-B1D3-13C5E4F40CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A723DC4-45DE-48C2-B1D3-13C5E4F40CE2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
