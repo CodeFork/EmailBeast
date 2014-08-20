@@ -14,6 +14,8 @@ namespace EmailBeast
 
         public SmtpBeastServerConfig ServerConfig { get; private set; }
 
+        public bool IsStarted { get; private set; }
+
 
         public SmtpBeastServer(SmtpBeastServerConfig serverConfig)
         {
@@ -21,13 +23,14 @@ namespace EmailBeast
                 throw new ArgumentNullException("serverConfig");
 
             ServerConfig = serverConfig;
+            IsStarted = false;
         }
 
 
         public void Start()
         {
             // Data buffer for incoming data.
-            byte[] bytes = new Byte[1024];
+            // byte[] bytes = new Byte[1024];
 
             // Establish the local endpoint for the socket. The DNS name of the computer
             // running the listener is "host.contoso.com".
@@ -45,6 +48,8 @@ namespace EmailBeast
             {
                 listener.Bind(ServerConfig.EndPoint);
                 listener.Listen(100);
+
+                IsStarted = true;
 
                 while (true)
                 {
@@ -64,8 +69,8 @@ namespace EmailBeast
                 Console.WriteLine(e.ToString());
             }
 
-            Console.WriteLine("\nPress ENTER to continue...");
-            Console.Read();
+
+            IsStarted = false;
         }
 
         public void Dispose()
