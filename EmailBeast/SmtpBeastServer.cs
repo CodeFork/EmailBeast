@@ -1,98 +1,120 @@
 ﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
+using EmailBeast.Net;
 
 namespace EmailBeast
 {
     public class SmtpBeastServer : IDisposable
     {
-        private static readonly ManualResetEvent ConnectionAcceptedManualResetEvent = new ManualResetEvent(false);
-
+        private INetworkServerConnection _networkServerConnection;
 
 
         public SmtpBeastServerConfig ServerConfig { get; private set; }
+        public bool IsStarted { get { return _networkServerConnection.IsListening; } }
 
 
-        public SmtpBeastServer(SmtpBeastServerConfig serverConfig)
+        public SmtpBeastServer(SmtpBeastServerConfig serverConfig, INetworkServerConnection networkServerConnection = null)
         {
             if (null == serverConfig)
                 throw new ArgumentNullException("serverConfig");
 
             ServerConfig = serverConfig;
+            _networkServerConnection = networkServerConnection ?? new SocketNetworkServerConnection();
         }
 
 
         public void Start()
         {
-            // Data buffer for incoming data.
-            byte[] bytes = new Byte[1024];
-
-            // Establish the local endpoint for the socket. The DNS name of the computer
-            // running the listener is "host.contoso.com".
-            //IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            //IPAddress ipAddress = ipHostInfo.AddressList[0];
-            //IPEndPoint localEndPoint = ServerConfig.EndPoint;
-
-
-            // Create a TCP/IP socket.
-            Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            _networkServerConnection.ConnectionAccepted += networkServerConnection_ConnectionAccepted;
 
 
             // Bind the socket to the local endpoint and listen for incoming connections.
             try
             {
-                listener.Bind(ServerConfig.EndPoint);
-                listener.Listen(100);
+                _networkServerConnection
+                    .BindTo(ServerConfig.EndPoint)
+                    .StartListeningForConnections(100);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine("[SmtpBeastServer::Start]  Caught Exception:\n{0}", exception);
+            }
+        }
 
-                while (true)
+        public void Stop()
+        {
+            try
+            {
+                if (null != _networkServerConnection && _networkServerConnection.IsListening)
                 {
-                    // Set the event to nonsignaled state.
-                    ConnectionAcceptedManualResetEvent.Reset();
-
-                    // Start an asynchronous socket to listen for connections.
-                    Console.WriteLine("Waiting for a connection...");
-                    listener.BeginAccept(AcceptCallback, listener);
-
-                    // Wait until a connection is made before continuing.
-                    ConnectionAcceptedManualResetEvent.WaitOne();
+                    Console.WriteLine("[SmtpBeastServer::Stop]  Stopping Network Connection");
+                    _networkServerConnection.StopListeningForConnections();
                 }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine("[SmtpBeastServer::Stop]  Caught Exception:\n{0}", exception);
             }
+        }
 
-            Console.WriteLine("\nPress ENTER to continue...");
-            Console.Read();
+        private void networkServerConnection_ConnectionAccepted(INetworkServerConnection parent, INetworkClientConnection clientConnection)
+        {
+            Console.WriteLine("[SmtpBeastServer::networkServerConnection_ConnectionAccepted]  Connection Accepted - Sending Greeting");
+
+            clientConnection.Send(new SmtpServerMessageBuilder().Greeting());
+
+            clientConnection.Close();
         }
 
         public void Dispose()
         {
-        }
-
-
-        public static void AcceptCallback(IAsyncResult ar)
-        {
-            // Signal the main thread to continue.
-            ConnectionAcceptedManualResetEvent.Set();
-
-            // Get the socket that handles the client request.
-            Socket listener = (Socket) ar.AsyncState;
-            Socket handler = listener.EndAccept(ar);
-
-            // Create the state object.
-            SmtpBeastStateObject state = new SmtpBeastStateObject
+            Console.WriteLine("[SmtpBeastServer::Dispose]");
+            lock (this)
             {
-                workSocket = handler
-            };
+                if (null != _networkServerConnection)
+                {
+                    try
+                    {
+                        Console.WriteLine("[SmtpBeastServer::Dispose]  StopListeningForConnections");
+                        if (_networkServerConnection.IsListening)
+                        {
+                            _networkServerConnection.StopListeningForConnections();
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine("Caught Exception in SmtpBeastServer::Dispose:\n{0}", exception);
+                    }
+                    finally
+                    {
+                        _networkServerConnection = null;
+                    }
+                }
+            }
 
-            handler.Send(new SmtpServerMessageBuilder().Greeting());
-
-            handler.BeginReceive(state.buffer, 0, SmtpBeastStateObject.BufferSize, 0, ReadCallback, state);
+            Console.WriteLine("[SmtpBeastServer::Dispose]  Disposed");
         }
 
+
+        //public static void AcceptCallback(IAsyncResult ar)
+        //{
+        //    // Signal the main thread to continue.
+        //    ConnectionAcceptedManualResetEvent.Set();
+
+        //    // Get the socket that handles the client request.
+        //    Socket listener = (Socket) ar.AsyncState;
+        //    Socket handler = listener.EndAccept(ar);
+
+        //    // Create the state object.
+        //    SmtpBeastStateObject state = new SmtpBeastStateObject
+        //    {
+        //        workSocket = handler
+        //    };
+
+        //    handler.Send(new SmtpServerMessageBuilder().Greeting());
+
+        //    handler.BeginReceive(state.buffer, 0, SmtpBeastStateObject.BufferSize, 0, ReadCallback, state);
+        //}
+        /*
         public static void ReadCallback(IAsyncResult ar)
         {
             Console.WriteLine("ReadCallback: IsCompleted? [{0}]  CompletedSynchronously? [{1}]", ar.IsCompleted, ar.CompletedSynchronously);
@@ -130,8 +152,8 @@ namespace EmailBeast
                 }
             }
         }
-
-
+*/
+        /*
         private static void Send(Socket handler, String data)
         {
             // Convert the string data to byte data using ASCII encoding.
@@ -163,5 +185,6 @@ namespace EmailBeast
                 Console.WriteLine(e.ToString());
             }
         }
+        */
     }
 }

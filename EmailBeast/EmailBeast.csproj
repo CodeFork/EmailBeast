@@ -39,6 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Net\INetworkClientConnection.cs" />
+    <Compile Include="Net\INetworkServerConnection.cs" />
+    <Compile Include="Net\SocketNetworkClientConnection.cs" />
+    <Compile Include="Net\SocketNetworkServerConnection.cs" />
     <Compile Include="SmtpBeastServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmtpBeastServerConfig.cs" />
