@@ -1,13 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailBeast", "EmailBeast\EmailBeast.csproj", "{696B12D9-3159-4F04-A428-C05268A22629}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailBeast.Test", "EmailBeast.Test\EmailBeast.Test.csproj", "{DE3A5E26-6324-440F-905C-B3A0AF175228}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailBeastConsoleApp", "EmailBeastConsoleApp\EmailBeastConsoleApp.csproj", "{3A723DC4-45DE-48C2-B1D3-13C5E4F40CE2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DA08A4DE-82B1-45C2-B439-DA2D3B0B2C9A}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

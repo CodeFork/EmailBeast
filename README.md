@@ -1,4 +1,6 @@
 EmailBeast
 ==========
 
-An open source email server written in C#.
+An open source email server component written in C#.
+
+License by MIT

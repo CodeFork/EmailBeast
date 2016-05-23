@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Sockets;
 using EmailBeast.Net;
 
 namespace EmailBeast
@@ -16,7 +15,7 @@ namespace EmailBeast
         public SmtpBeastServer(SmtpBeastServerConfig serverConfig, INetworkServerConnection networkServerConnection = null)
         {
             if (null == serverConfig)
-                throw new ArgumentNullException("serverConfig");
+                throw new ArgumentNullException(nameof(serverConfig));
 
             ServerConfig = serverConfig;
             _networkServerConnection = networkServerConnection ?? new SocketNetworkServerConnection();
